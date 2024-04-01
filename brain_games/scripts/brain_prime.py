@@ -1,19 +1,21 @@
 import random
-
 from brain_games.cli import welcome_user
 
 
-def generate_progression():
-    progression_length = random.randint(5, 10)
-    start = random.randint(1, 10)
-    step = random.randint(1, 5)
-    hidden_place = random.randint(0, progression_length - 1)
+def is_prime(number):
+    if number < 2:
+        return False
+    for i in range(2, int(number**0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
 
-    progression = [start + i * step for i in range(progression_length)]
-    hidden_number = progression[hidden_place]
-    progression[hidden_place] = '..'
 
-    return progression, hidden_number
+def generate_question():
+    number = random.randint(1, 50)
+    is_prime_result = is_prime(number)
+    correct_answer = 'yes' if is_prime_result else 'no'
+    return number, correct_answer
 
 
 def ask_question(name):
@@ -21,18 +23,17 @@ def ask_question(name):
     rounds = 3
 
     for i in range(rounds):
-        progression, hidden_value = generate_progression()
-        progression_str = ' '.join(map(str, progression))
+        number, correct_answer = generate_question()
 
-        print(f"Question: {progression_str}")
-        user_answer = int(input('Answer "yes" if given number is prime. Otherwise answer "no".'))
+        print(f"Question: {number}")
+        user_answer = input("Your answer: ")
 
-        if user_answer == hidden_value:
+        if user_answer.lower() == correct_answer:
             print("Correct!")
             correct_answers_count += 1
         else:
-            print(f"'{user_answer}' is wrong answer "
-                  f";(. Correct answer was '{hidden_value}'.")
+            print(f"'{user_answer}' is wrong answer ;"
+                  f"(. Correct answer was '{correct_answer}'.")
             print(f"Let's try again, {name}!")
             break
 
@@ -43,7 +44,7 @@ def ask_question(name):
 def main():
     name = welcome_user()
 
-    print("What number is missing in the progression?")
+    print('Answer "yes" if given number is prime. Otherwise answer "no".')
 
     ask_question(name)
 
