@@ -1,44 +1,47 @@
 import random
 
-import prompt
-
 from brain_games.cli import welcome_user
-from brain_games.scripts.brain_games import main
 
 
-def conditions():
-    random_value1 = random.randint(-10, 10)
-    random_value2 = random.randint(-10, 10)
-    math_operand = ['+', '-', '*']
-    random_math_operation = random.choice(math_operand)
-    print(f'Question: {random_value1} {random_math_operation} {random_value2}')
-    if random_math_operation == '+':
-        result = random_value1 + random_value2
-    if random_math_operation == '-':
-        result = random_value1 - random_value2
-    if random_math_operation == '*':
-        result = random_value1 * random_value2
-    return result
+def generate_question():
+    num1 = random.randint(1, 50)
+    num2 = random.randint(1, 50)
+    operator = random.choice(['+', '-', '*'])
+    expression = f"{num1} {operator} {num2}"
+    correct_answer = str(eval(expression))
+    return expression, correct_answer
+
+
+def ask_question(name):
+    correct_answers_count = 0
+    rounds = 3
+
+    for i in range(rounds):
+        expression, correct_answer = generate_question()
+
+        print(f"Question: {expression}")
+        user_answer = input("Your answer: ")
+
+        if user_answer == correct_answer:
+            print("Correct!")
+            correct_answers_count += 1
+        else:
+            print(f"'{user_answer}' is wrong answer ;"
+                  f"(. Correct answer was '{correct_answer}'.")
+            print("Let's try again, " + name + "!")
+            break
+
+        if correct_answers_count == rounds:
+            print("Congratulations, " + name + "!")
 
 
 def main():
-    count_point = 0
     name = welcome_user()
-    while count_point < 3:
-        res = int(conditions())
-        answer = int(input('Your answer: '))
-        if res == answer:
-            print('Correct')
-            count_point += 1
-        else:
-            print(f'{answer} is wrong answer ;(.Correct answer was {res}')
-            print(f'Let\'s try again, {name}!')
-            break
-    if count_point == 3:
-        print(f'Cogratulations, {name}!')
 
+    print("What is the result of the expression?")
 
-print('brain-calc\n')
+    ask_question(name)
+
 
 if __name__ == "__main__":
     main()

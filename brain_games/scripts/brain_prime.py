@@ -3,46 +3,49 @@ import random
 from brain_games.cli import welcome_user
 
 
-def is_prime(n):
-    if n <= 1:
-        return False
-    elif n <= 3:
-        return True
-    elif n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
+def generate_progression():
+    progression_length = random.randint(5, 10)
+    start = random.randint(1, 10)
+    step = random.randint(1, 5)
+    hidden_place = random.randint(0, progression_length - 1)
+
+    progression = [start + i * step for i in range(progression_length)]
+    hidden_number = progression[hidden_place]
+    progression[hidden_place] = '..'
+
+    return progression, hidden_number
+
+
+def ask_question(name):
+    correct_answers_count = 0
+    rounds = 3
+
+    for i in range(rounds):
+        progression, hidden_value = generate_progression()
+        progression_str = ' '.join(map(str, progression))
+
+        print(f"Question: {progression_str}")
+        user_answer = int(input("Your answer: "))
+
+        if user_answer == hidden_value:
+            print("Correct!")
+            correct_answers_count += 1
+        else:
+            print(f"'{user_answer}' is wrong answer "
+                  f";(. Correct answer was '{hidden_value}'.")
+            print(f"Let's try again, {name}!")
+            break
+
+        if correct_answers_count == rounds:
+            print(f"Congratulations, {name}!")
 
 
 def main():
-    count_point = 0
     name = welcome_user()
-    print('Answer "yes" if given number is prime. Otherwise answer "no".')
-    while True:
-        num = random.randint(1, 100)
-        answer = input(f'Question: {num}\nYour answer: ')
-        if (is_prime(num) and answer.lower() == 'yes') or \
-                (not is_prime(num) and answer.lower() == 'no'):
-            count_point += 1
-            print('Correct!')
-            if count_point >= 3:
-                print(f'Congratulations, {name}!')
-                break
-        elif is_prime(num) and answer.lower() == 'no':
-            print(f'{answer} is wrong answer ;(.Correct answer was "yes"')
-            print(f'Let\'s try again, {name}!')
-            break
-        elif not is_prime(num) and answer.lower() == 'yes':
-            print(f'{answer} is wrong answer ;(.Correct answer was "no"')
-            print(f'Let\'s try again, {name}!')
-            break
 
+    print("What number is missing in the progression?")
 
-print('brain-prime\n')
+    ask_question(name)
 
 
 if __name__ == "__main__":
