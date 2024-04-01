@@ -25,7 +25,7 @@ def ask_question(name):
         progression_str = ' '.join(map(str, progression))
 
         print(f"Question: {progression_str}")
-        user_answer = int(input("Your answer: "))
+        user_answer = int(input('Answer "yes" if given number is prime. Otherwise answer "no".'))
 
         if user_answer == hidden_value:
             print("Correct!")
