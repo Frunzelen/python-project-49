@@ -26,7 +26,7 @@ def main():
     name = welcome_user()
     while count_point < 3:
         res = int(conditions())
-        answer = int(prompt.string('Your answer: '))
+        answer = int(input('Your answer: '))
         if res == answer:
             print('Correct')
             count_point += 1

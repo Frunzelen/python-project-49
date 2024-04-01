@@ -13,7 +13,7 @@ def main():
     while count_point < 3:
         random_value = random.randint(-1000, 1000)
         print(f'Question: {random_value}')
-        answer = prompt.string('Your answer: ')
+        answer = input('Your answer: ')
         if answer.lower() == "yes" and random_value % 2 == 0:
             print('Correct!')
             count_point += 1

@@ -19,7 +19,7 @@ def main():
         random_value1 = random.randint(1, 100)
         random_value2 = random.randint(1, 100)
         print(f'Question: {random_value1} {random_value2}')
-        answer = int(prompt.string('Your answer: '))
+        answer = int(input('Your answer: '))
         res = gcd(random_value1, random_value2)
         if answer == res:
             print('Correct!')
